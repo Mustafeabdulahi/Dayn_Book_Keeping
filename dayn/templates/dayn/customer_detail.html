@@ -1,0 +1,35 @@
+{% extends "dayn/base.html" %}
+{% block content %}
+	<tr> 
+	    <th scope="row">{{object.id}}</th>
+	    <td style="white-space: nowrap;">{{object.first_name}}</td>
+	    <td style="white-space: nowrap;">{{object.last_name}}</td>
+	    <td style="white-space: nowrap;">{{object.amount_owed}}</td>
+	    <td style="white-space: nowrap;">{{object.date_owed|date:"m d, Y"}}</td>
+	    <td style="white-space: nowrap;">{{object.amount_paid}}</td>
+	    <td style="white-space: nowrap;">{{object.date_paid|date:"m d, Y"}}</td>
+	    <td style="white-space: nowrap;">${{object.total_owed}}</td>
+
+
+	    {% if object.total_owed == 0 %}
+	    	<td>Paid</td>
+
+	    {% elif object.total_owed > 0 %}
+	    	<td>Not piad</td>
+
+	    {% else %}
+			<td>On hold</td>
+		
+		{% endif %}
+	</tr> 
+
+	{% if object.client == user %}
+      <div>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'customer-update' object.id %}">Update</a>
+        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'customer-delete' object.id %}">Delete</a>
+      </div>
+    {% endif %}
+
+{% endblock content %}
+
+	

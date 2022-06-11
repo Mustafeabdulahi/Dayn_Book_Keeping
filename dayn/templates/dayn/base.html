@@ -1,0 +1,75 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<body>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'dayn/main.css' %}"> 
+
+    <title>Customer Dayn Book!</title>
+  </head>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <a class="navbar-brand" href="{% url 'dayn-home'%}">Customer Dayn Book</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <div class="navbar-nav mr-auto">
+      <a class="nav-item nav-link" href="{% url 'dayn-home' %}">Home</a>
+      <a class="nav-item nav-link" href="{% url 'dayn-about' %}">About</a>
+    </div>
+    <!-- Navbar Right Side -->
+    <div class="navbar-nav">
+      {% if user.is_authenticated %}
+        <a class="nav-item nav-link" href="{% url 'customer-create' %}">Add Customer</a>
+        <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+        <div>
+            <form action="#" class="form-inline my-2 my-lg-0" method="POST">
+              <input class="form-control mr-sm-2" type="search" placeholder="Last name" aria-label="Search" name="Last Name">
+              <button class="btn btn-primary" type="submit">Search</button>
+             </form>
+        </div>
+        <br>
+      {% else %}
+        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+      {% endif %}
+</nav>
+    <div class="container">
+      <section class="ftco-section">
+        <div class="container">
+
+          <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-">
+              <div class="table-wrap">
+                {% if messages %}
+                    {% for message in messages %}
+                      <div class="alert alert-{{ message.tags }}">
+                          {{ message }}
+                      </div>
+                    {% endfor %}
+                {% endif %}    
+                <table class="table table-striped">
+                  <tbody>
+                    {% block content %}{% endblock%}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+  </section>
+  </body>
+</html>

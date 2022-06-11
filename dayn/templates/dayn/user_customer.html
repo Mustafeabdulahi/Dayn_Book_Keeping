@@ -1,0 +1,81 @@
+{% extends "dayn/base.html" %}
+{% block content %}
+<h1 class="mb-3">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>	 		
+      <thead>
+        <tr>
+            <th style="white-space: nowrap;">Customer ID</th>
+            <th style="white-space: nowrap;">Client</th> 
+            <th style="white-space: nowrap;">First Name</th> 
+            <th style="white-space: nowrap;">Last Name</th> 
+            <th style="white-space: nowrap;">Amount Owed</th> 
+            <th style="white-space: nowrap;">Date Owed</th>
+            <th style="white-space: nowrap;">Amount Paid</th> 
+            <th style="white-space: nowrap;">Date Paid</th> 
+            <th style="white-space: nowrap;">Total Owed</th> 
+            <th style="white-space: nowrap;"> Status</th>
+
+         </tr>
+      </thead>
+        {% for customer in customers  %}
+			<tr> 
+			    <th scope="row"><a href="{% url 'customer-detail' customer.id %}">{{customer.id}}<a/></th>
+
+
+
+			    <th style="white-space: nowrap;"><a href="{% url 'user-customers' customer.client.username %}">{{customer.client}}</a></th>
+
+
+
+			    <td style="white-space: nowrap;">{{customer.first_name}}</td>
+			    <td style="white-space: nowrap;">{{customer.last_name}}</td>
+			    <td style="white-space: nowrap;">${{customer.amount_owed}}</td>
+			    <td style="white-space: nowrap;">{{customer.date_owed|date:"m d, Y"}}</td>
+			    <td style="white-space: nowrap;">${{customer.amount_paid}}</td>
+			    <td style="white-space: nowrap;">{{customer.date_paid|date:"m d, Y"}}</td>
+			    <td style="white-space: nowrap;">${{customer.total_owed}}</td>
+
+
+			    {% if customer.total_owed == 0 %}
+			    	<td>Paid</td>
+
+			    {% elif customer.total_owed > 0 %}
+			    	<td>Not piad</td>
+
+			    {% else %}
+          
+					<td>On hold</td>
+				
+				{% endif %}
+
+			</tr> 
+	{%endfor%}
+
+	{% if is_paginated %}
+
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+    {% endif %}
+
+{% endblock content %}
+
+<!--
+<td><a href="#" class="btn btn-danger">On hold</a></td>
+
+<a class="container" href="#">Login</a>
+-->
